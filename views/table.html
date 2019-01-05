@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>All Event Data</h2>
+
+{% if events|length %}
+<table class="table">
+	<thead class="thead-light">
+		<th>Week</th>
+		<th>Date</th>
+		<th>Activity</th>
+		<th>Duration (hrs)</th>
+	</thead>
+	<tbody>
+	{% for event in events %}
+	<tr>
+		<td>{{event.week}}</td>
+		<td>{{event.date}}</td>
+		<td>{{event.activity}}</td>
+		<td>{{event.duration}}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% else %}<p>No activities have been entered.</p>{% endif %}
+
+{% endblock %}

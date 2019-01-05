@@ -1,0 +1,38 @@
+{
+  "name": "timetrck",
+  "version": "0.1.0",
+  "description": "App to track how much time you spend in each activity",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.15.4",
+    "nodemon": "^1.18.7",
+    "nunjucks": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0",
+    "nodemon": "^1.17.3"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "scripts": {
+    "test": "jest --forceExit --detectOpenHandles",
+    "start": "node server.js",
+    "lint": "eslint .",
+    "dev": "nodemon -e js,json,html --exec \"npm run lint && npm start\""
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/.c9/"
+    ]
+  },
+  "author": "Luke Dobson",
+  "license": "UNLICENSE",
+  "repository": "N/A"
+}

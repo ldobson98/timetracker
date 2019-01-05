@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var chartData = google.visualization.arrayToDataTable({{chartData | dump | safe}});
+        var chartOptions = {
+          title: 'Work by Activity by Week',
+          hAxis: {title: 'Week',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0},
+          isStacked:true,
+          backgroundColor: { fill:'transparent' },
+        };
+
+        var classData = google.visualization.arrayToDataTable({{classData | dump | safe}});
+        var classDataOptions = {
+        	title: 'Overall Class Breakdown',
+        	backgroundColor: { fill:'transparent' },
+        };
+
+        var productiveData = google.visualization.arrayToDataTable({{productiveData | dump | safe}});
+        var productiveDataOptions = {
+        	title: 'Overall Productivity Breakdown',
+        	backgroundColor: { fill:'transparent' },
+        };
+
+        var sleepData = google.visualization.arrayToDataTable({{sleepData | dump | safe}});
+        var sleepDataOptions = {
+        	title: 'Sleep by Week',
+          	hAxis: {title: 'Week',  titleTextStyle: {color: '#333'}},
+          	vAxis: {minValue: 0},
+          	backgroundColor: { fill:'transparent' },
+        };
+
+        var dataChart = new google.visualization.AreaChart(document.getElementById('allData'));
+        dataChart.draw(chartData, chartOptions);
+
+        var classChart = new google.visualization.PieChart(document.getElementById('classChart'));
+        classChart.draw(classData, classDataOptions);
+
+        var productiveChart = new google.visualization.PieChart(document.getElementById('productiveChart'));
+        productiveChart.draw(productiveData, productiveDataOptions);
+
+        var sleepChart = new google.visualization.AreaChart(document.getElementById('sleepChart'));
+        sleepChart.draw(sleepData, sleepDataOptions);
+      }
+</script>
+
+{% if errors %}
+{% for error in errors %}
+<div class="alert alert-danger" role="alert">{{error}}</div>
+{% endfor %}
+{% endif %}
+
+{% if successes %}
+{% for success in successes %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">{{success}}
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	</button>
+</div>
+{% endfor %}
+{% endif %}
+<div class="row">
+	<div class="col-md-4">
+		<h2>Enter Activity Information</h2>
+		<form method="post">
+			<div class="form-label-group">
+				<input name="inputDate" type="date" id="inputDate" class="form-control" placeholder="Date" required>
+				<label for="inputDate">Date of Activity</label>
+			</div>
+			<label for="inputActivity">Activity</label>
+			<div class="form-label-group">
+				<select name="inputActivity" id="inputActivity" class="form-control" placeholder="Activity" required autofocus placeholder="Activity">
+					{% if activities %}
+					{% for activity in activities %}
+					<option>{{activity.name}}</option>
+					{% endfor %}
+					{% endif %}
+				</select>
+			</div>
+			<div class="form-label-group">
+				<input name="inputDuration" type="number" step="0.001" min="0" id="inputDuration" class="form-control" placeholder="Time" required>
+				<label for="inputDuration">Duration of Activity (hrs)</label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">Submit</button>
+		</form>
+	</div>
+	<div class="col-md-8">
+		<div id="productiveChart" style="width: 100%; height: 300px;"></div>
+	</div>
+</div>
+<div class="row">
+	<div id="allData" style="width: 100%; height: 500px;"></div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div id="classChart" style="width: 100%; height: 500px;"></div>
+	</div>
+	<div class="col-md-6">
+		<div id="sleepChart" style="width: 100%; height: 500px;"></div>
+	</div>
+</div>
+<script type="text/javascript">document.getElementById('inputDate').valueAsDate = new Date();</script>
+
+
+
+
+{% endblock %}
